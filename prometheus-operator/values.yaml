@@ -109,6 +109,30 @@ alertmanager:
         receiver: 'null'
     receivers:
     - name: 'null'
+  ##config:
+  ##  global:
+  ##    resolve_timeout: 5m
+  ##    smtp_smarthost: 'smtp.163.com:25' # 配置邮件发送信息
+  ##    smtp_from: 'chenjt_java_test@163.com'
+  ##    smtp_auth_username: 'chenjt_java_test@163.com'
+  ##    smtp_auth_password: 'chenjt_java' #改成自己的密码
+  ##    smtp_hello: '163.com'
+  ##    smtp_require_tls: false
+  ##  route:
+  ##    group_by: ['job']
+  ##    group_wait: 30s
+  ##    group_interval: 5m
+  ##    repeat_interval: 12h
+  ##    receiver: 'default'
+  ##    routes:
+  ##    - match:
+  ##        alertname: Watchdog
+  ##      receiver: 'default'
+  ##  receivers:
+  ##  - name: 'default'
+  ##    email_configs:
+  ##    - to: 'chenjt_java@163.com'
+  ##      send_resolved: true
 
   ## Alertmanager template files to format alerts
   ## ref: https://prometheus.io/docs/alerting/notifications/
@@ -224,7 +248,15 @@ alertmanager:
     ## Storage is the definition of how storage will be used by the Alertmanager instances.
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
     ##
-    storage: {}
+    storage:
+      volumeClaimTemplate:
+        spec:
+          selector:
+            matchLabels:
+              app: prometheus-alertmanager-pv
+          resources:
+            requests:
+              storage: 5Gi
     # volumeClaimTemplate:
     #   spec:
     #     storageClassName: gluster
@@ -256,7 +288,11 @@ alertmanager:
     ## Define resources requests and limits for single Pods.
     ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
     ##
-    resources: {}
+    resources:
+      limits:
+        memory: 200Mi
+      requests:
+        memory: 30Mi
     # requests:
     #   memory: 400Mi
 
@@ -1056,14 +1092,26 @@ prometheus:
 
     ## Resource limits & requests
     ##
-    resources: {}
+    resources:
+      limits:
+        memory: 800Mi
+      requests:
+        memory: 50Mi
     # requests:
     #   memory: 400Mi
 
     ## Prometheus StorageSpec for persistent data
     ## ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
     ##
-    storageSpec: {}
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          selector:
+            matchLabels:
+              app: prometheus-pv
+          resources:
+            requests:
+              storage: 10Gi
     #  volumeClaimTemplate:
     #    spec:
     #      storageClassName: gluster
