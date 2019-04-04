@@ -95,10 +95,10 @@ ingress:
 
 resources: 
   limits:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 300m
+    memory: 300Mi
   requests:
-    cpu: 10m
+    cpu: 0m
     memory: 30Mi
 
 ## Node labels for pod assignment
