@@ -352,7 +352,7 @@ grafana:
   ##
   defaultDashboardsEnabled: true
 
-  adminPassword: a!245dg89
+  adminPassword: xxx
 
   ingress:
     ## If true, Prometheus Ingress will be created
